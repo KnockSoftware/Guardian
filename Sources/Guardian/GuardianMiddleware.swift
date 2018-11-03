@@ -10,7 +10,7 @@ import Vapor
 
 public typealias BodyClosure = ((_ req: Request) throws -> Future<Response>?)
 
-public struct GuardianMiddleware: Middleware {
+public class GuardianMiddleware: Middleware {
     
     internal var cache: MemoryKeyedCache
     
@@ -32,7 +32,7 @@ public struct GuardianMiddleware: Middleware {
         self.refreshInterval = rate.refreshInterval
     }
     
-    public mutating func setRate(_ newRate: Rate) {
+    public func setRate(_ newRate: Rate) {
         limit = newRate.limit
         refreshInterval = newRate.refreshInterval
     }
