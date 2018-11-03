@@ -13,9 +13,9 @@ public typealias BodyClosure = ((_ req: Request) throws -> Future<Response>?)
 public struct GuardianMiddleware: Middleware {
     
     internal var cache: MemoryKeyedCache
-    internal let limit: Int
-    internal let refreshInterval: Double
     
+    internal var limit: Int
+    internal var refreshInterval: Double
     internal var bodyClosure: BodyClosure?
     
     public init(rate: Rate,closure: BodyClosure? = nil) {
@@ -30,6 +30,11 @@ public struct GuardianMiddleware: Middleware {
         self.bodyClosure = closure
         self.limit = rate.limit
         self.refreshInterval = rate.refreshInterval
+    }
+    
+    public mutating func setRate(_ newRate: Rate) {
+        limit = newRate.limit
+        refreshInterval = newRate.refreshInterval
     }
     
     public func respond(to request: Request, chainingTo next: Responder) throws -> EventLoopFuture<Response> {
