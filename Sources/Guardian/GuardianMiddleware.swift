@@ -35,6 +35,8 @@ public class GuardianMiddleware: Middleware {
     public func setRate(_ newRate: Rate) {
         limit = newRate.limit
         refreshInterval = newRate.refreshInterval
+        
+        cache = MemoryKeyedCache() // updating the rate limit resets the current count for all clients.
     }
     
     public func respond(to request: Request, chainingTo next: Responder) throws -> EventLoopFuture<Response> {
