@@ -65,7 +65,7 @@ public class GuardianMiddleware: Middleware {
             guard requestsLeft >= 0 else {
                 guard let closure = self.bodyClosure,let body = try closure(request) else {
                     let json = ["status":"429","message":"Visit too often, please try again later"]
-                    return try json.encode(for: request)
+                    return json.encode(status: HTTPStatus(statusCode: 429), for: request)
                 }
                 return try body.encode(for: request)
             }
